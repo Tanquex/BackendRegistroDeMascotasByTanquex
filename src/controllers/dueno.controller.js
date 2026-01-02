@@ -12,20 +12,34 @@ export class DuenoController {
         }
     }
 
-    static async login(req, res) {
-        try {
-            const { email, password } = req.body;
-            const user = await DuenoService.login(email, password);
+static async login(req, res) {
+    try {
+        const { email, password } = req.body;
+        const user = await DuenoService.login(email, password);
 
-            if (!user) return res.status(404).json({ message: "No existe" });
-            if (user === false) return res.status(400).json({ message: "Contraseña incorrecta" });
+        if (!user)
+            return res.status(404).json({ message: "No existe" });
 
-            const token = generateToken({ id: user.id });
-            return res.json({ message: "Login exitoso", token });
-        } catch (err) {
-            return res.status(500).json({ error: err.message });
-        }
+        if (user === false)
+            return res.status(400).json({ message: "Contraseña incorrecta" });
+
+        const token = generateToken({ id: user.id });
+
+        // 🔥 RESPUESTA CORRECTA PARA FRONTEND
+        return res.json({
+            token,
+            user: {
+                id: user.id,
+                nombre: user.nombreCompleto,
+                email: user.email
+            }
+        });
+
+    } catch (err) {
+        return res.status(500).json({ error: err.message });
     }
+}
+
 
     static async getAll(req, res) {
         const lista = await DuenoService.getAll();

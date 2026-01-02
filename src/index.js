@@ -9,6 +9,10 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import dotenv from "dotenv"; // ⭐ Cargar variables de entorno
+
+// Cargar variables desde el archivo .env
+dotenv.config();
 
 // Rutas
 import duenoRoutes from "./routes/dueno.routes.js";
